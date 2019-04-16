@@ -3,10 +3,10 @@
 	header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json");
     
-    /*http://localhost:8080/apis/MercadoDelirio/controller/getProducts.php*/
+    /*http://localhost:8080/apis/MercadoDelirioApi/controller/getProducts.php?idCategoria=1*/
 
     /*  conexion POO */
-	function buscarProductos()
+	function buscarProductos($idCategoria)
     {
         try{
 
@@ -16,8 +16,12 @@
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->exec("SET CHARACTER SET utf8");   
 
-            $stm    = $pdo->prepare("SELECT idProducto, nombre, precio, unidad, tipoUnidad, img FROM producto");
-            $stm->execute();
+            $stm    = $pdo->prepare("SELECT idProducto, nombre, precio, unidad, tipoUnidad, img FROM producto where idCategoria = ?");
+            $stm->execute(array($idCategoria));
+
+
+
+
             $r = $stm->fetchAll(PDO::FETCH_OBJ);
             if($r){
                 return $r;
@@ -32,14 +36,19 @@
 
     include "../entregarResponse.php";
 
+    if(!empty($_GET['idCategoria'])){
 
+        $idCategoria = $_GET['idCategoria'];
 
-	$productos = buscarProductos();
+    	$productos = buscarProductos($idCategoria);
 
-    if($productos===false){
-    entregarResponse(200, "Los datos ingresados no corresponden", null);
+        if($productos===false){
+        entregarResponse(200, "Los datos ingresados no corresponden", null);
+        }else{
+            entregarResponse(200, "Productos encontrados", $productos);
+        }
     }else{
-        entregarResponse(200, "Productos encontrados", $productos);
+        entregarResponse(400, "Bad request", null);
     }
 
 
