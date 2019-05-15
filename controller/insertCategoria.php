@@ -3,8 +3,8 @@
 	header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json");
 
-    /*http://localhost:8080/apis/MercadoDelirio/controller/getCategorias.php*/
-	function validarUsuario($email, $clave)
+    /*http://localhost/apis/MercadoDelirioApi/controller/insertCategoria.php?nombre=nuevo&descripcion=miDescripcion&estado=1*/
+	function insertCategoria( $nombre, $descripcion)
     {
 
         try{
@@ -15,8 +15,9 @@
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->exec("SET CHARACTER SET utf8");   
 
-            $stm    = $pdo->prepare("SELECT IdUsuario   ,Nombre  ,Email   ,IdPerfil    ,Estado from Usuario WHERE Email = ? and Clave = ? ");
-            $stm->execute(array($email,$clave));
+            $stm    = $pdo->prepare("insert into categoria (Nombre, Descripcion, Estado)
+                                    values (?,?,?) ");
+            $stm->execute(array($nombre, $descripcion, 1));
             $r = $stm->fetch(PDO::FETCH_OBJ);
 
             if($r){
@@ -31,15 +32,17 @@
 
     include "../entregarResponse.php";
 
-    if(!empty($_GET['email']) && !empty($_GET['clave'])){
-    	$email = $_GET['email'];
-    	$clave = $_GET['clave'];
+    if(!empty($_GET['nombre']) &&
+        !empty($_GET['descripcion'])){
 
-	    $usuario = validarUsuario($email,$clave);
-        if($usuario===false){
+    	$_GET['nombre']; 
+        $_GET['descripcion'];
+
+	    $response = insertCategoria( $_GET['nombre'], $_GET['descripcion']);
+        if($response===false){
             entregarResponse(200, "Los datos ingresados no corresponden", null);
         }else{
-            entregarResponse(200, "Usuario encontrado", $usuario);
+            entregarResponse(200, 0, $response);
         }
     }else{
         entregarResponse(400, "Bad request", null);

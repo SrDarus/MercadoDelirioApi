@@ -16,7 +16,7 @@
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->exec("SET CHARACTER SET utf8");   
 
-            $stm    = $pdo->prepare("SELECT idProducto, nombre, precio, unidad, tipoUnidad, img FROM producto");
+            $stm    = $pdo->prepare("SELECT IdProducto, IdTipoProducto, IdUnidadMedida, Nombre, Precio, Img, Estado FROM producto");
             $stm->execute();
 
 

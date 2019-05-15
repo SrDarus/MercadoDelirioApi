@@ -4,7 +4,7 @@
     header("Content-Type: application/json");
 
     /*http://localhost:8080/apis/MercadoDelirio/controller/getCategorias.php*/
-	function validarUsuario($email, $clave)
+	function upadteProucto($email, $clave)
     {
 
         try{
@@ -15,7 +15,7 @@
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->exec("SET CHARACTER SET utf8");   
 
-            $stm    = $pdo->prepare("SELECT IdUsuario   ,Nombre  ,Email   ,IdPerfil    ,Estado from Usuario WHERE Email = ? and Clave = ? ");
+            $stm    = $pdo->prepare("SELECT email, nombre, perfil FROM user WHERE email = ? and password = ? ");
             $stm->execute(array($email,$clave));
             $r = $stm->fetch(PDO::FETCH_OBJ);
 
@@ -31,11 +31,11 @@
 
     include "../entregarResponse.php";
 
-    if(!empty($_GET['email']) && !empty($_GET['clave'])){
+    if(!empty($_GET['email']) && !empty($_GET['password'])){
     	$email = $_GET['email'];
-    	$clave = $_GET['clave'];
+    	$password = $_GET['password'];
 
-	    $usuario = validarUsuario($email,$clave);
+	    $usuario = validarUsuario($email,$password);
         if($usuario===false){
             entregarResponse(200, "Los datos ingresados no corresponden", null);
         }else{
