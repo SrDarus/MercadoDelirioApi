@@ -1,9 +1,12 @@
 <?php 
 
+    header("Access-Control-Allow-Headers:*");
 	header("Access-Control-Allow-Origin: *");
-    header("Content-Type: application/json");
+    //header("Content-Type: application/json");
+    //header("Access-Control-Allow-Methods", "POST");
+    //header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
 
-    /*http://localhost/apis/MercadoDelirioApi/controller/insertCategoria.php?nombre=nuevo&descripcion=miDescripcion&estado=1*/
+    /*http://localhost/apis/MercadoDelirioApi/controller/insertCategoria.php?nombre=nombre2&descripcion=miDescripcion*/
 	function insertCategoria( $nombre, $descripcion)
     {
 
@@ -15,18 +18,19 @@
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->exec("SET CHARACTER SET utf8");   
 
-            $stm    = $pdo->prepare("insert into categoria (Nombre, Descripcion, Estado)
+            $stm = $pdo->prepare("insert into categoria (Nombre, Descripcion, Estado)
                                     values (?,?,?) ");
+
             $stm->execute(array($nombre, $descripcion, 1));
-            $r = $stm->fetch(PDO::FETCH_OBJ);
 
-            if($r){
-                return $r;
+            $count  = $stm->rowCount();
 
-            }else{ return $r; }
+            return $count;
 
+ 
         }catch (Exception $e){
             die($e->getMessage());
+            return $e->getMessage();
         }
     }
 

@@ -36,7 +36,7 @@
 
     include "../entregarResponse.php";
 
-    if(!empty($_GET['idCategoria'])){
+    if(!empty($_GET['IdProductoCategoria'])){
 
         $idCategoria = $_GET['idCategoria'];
 
