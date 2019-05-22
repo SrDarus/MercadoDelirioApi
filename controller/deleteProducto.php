@@ -6,8 +6,8 @@
     //header("Access-Control-Allow-Methods", "POST");
     //header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
 
-    /*http://localhost/apis/MercadoDelirioApi/controller/updateCategoria.php?id=2&nombre=verduritas*/
-	function updateProducto( $id, $idTipoProducto, $idUnidadMedida, $nombre, $precio, $img)
+    /*http://localhost/apis/MercadoDelirioApi/controller/deleteTipoProducto.php?id=2*/
+    function deleteProducto( $id)
     {
 
         try{
@@ -19,9 +19,9 @@
             $pdo->exec("SET CHARACTER SET utf8");   
 
             $stm    = $pdo->prepare("update producto 
-                set IdTipoProducto= ?, IdUnidadMedida= ?, Nombre= ?, Precio= ?, Img= ? where IdProducto = ? ");
+                set Estado=0 where idProducto = ? ");
 
-            $stm->execute(array($idTipoProducto, $idUnidadMedida, $nombre, $precio, $img, $id));
+            $stm->execute(array($id));
 
             $count  = $stm->rowCount();
 
@@ -35,21 +35,11 @@
 
     include "../entregarResponse.php";
 
-    if(!empty($_GET['id']) &&
-        !empty($_GET['idTipoProducto']) &&
-        !empty($_GET['idUnidadMedida']) &&
-        !empty($_GET['nombre']) &&
-        !empty($_GET['precio']) &&
-        !empty($_GET['img'])){
+    if(!empty($_GET['id'])){
 
         $_GET['id'];
-        $_GET['idTipoProducto'];
-        $_GET['idUnidadMedida'];
-        $_GET['nombre'];
-        $_GET['precio'];
-        $_GET['img'];
 
-	    $response = updateProducto($_GET['id'], $_GET['idTipoProducto'], $_GET['idUnidadMedida'], $_GET['nombre'], $_GET['precio'], $_GET['img']);
+        $response = deleteProducto($_GET['id']);
         if($response===false){
             entregarResponse(200, "Los datos ingresados no corresponden", null);
         }else{
