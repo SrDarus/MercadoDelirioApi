@@ -3,7 +3,7 @@
 	header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json");
     
- 	/*http://localhost/apis/MercadoDelirioApi/controller/gettipoProducto.php*/
+ 	/*http://localhost:8080/apis/MercadoDelirioApi/controller/gettipoProducto.php*/
     /*  conexion POO */
 	function buscarTipoProductos()
     {

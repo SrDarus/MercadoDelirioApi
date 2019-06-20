@@ -37,9 +37,10 @@
 
 	    $usuario = validarUsuario($email,$clave);
         if($usuario===false){
-            entregarResponse(200, "Los datos ingresados no corresponden", null);
+
+            entregarResponse(200, 1, null);
         }else{
-            entregarResponse(200, "Usuario encontrado", $usuario);
+            entregarResponse(200, 0, $usuario);
         }
     }else{
         entregarResponse(400, "Bad request", null);
